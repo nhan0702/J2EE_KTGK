@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sach hoc phan</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero hero-row">
+            <div>
+                <p class="eyebrow">Trang Home</p>
+                <h1>Danh sach hoc phan</h1>
+                <p class="subtitle">Hien thi tat ca hoc phan voi ten, so tin chi, giang vien, hinh anh va phan trang 5 mon moi trang.</p>
+            </div>
+            <div class="hero-actions">
+                <div sec:authorize="isAnonymous()" class="hero-actions">
+                    <a class="secondary-button" th:href="@{/register}">Dang ky sinh vien</a>
+                    <a class="secondary-button" th:href="@{/login}">Dang nhap</a>
+                </div>
+
+                <div sec:authorize="isAuthenticated()" class="user-panel">
+                    <span class="user-chip">
+                        Xin chao, <strong sec:authentication="name">username</strong>
+                    </span>
+                    <form th:action="@{/logout}" method="post">
+                        <button class="secondary-button" type="submit">Dang xuat</button>
+                    </form>
+                </div>
+
+                <a sec:authorize="hasRole('STUDENT')" class="secondary-button" th:href="@{/my-courses}">My Courses</a>
+                <a sec:authorize="hasRole('ADMIN')" class="primary-button" th:href="@{/courses/create}">Them hoc phan</a>
+            </div>
+        </section>
+
+        <section class="search-panel">
+            <form th:action="@{/courses}" method="get" class="search-form">
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="Tim kiem theo ten hoc phan">
+                <button class="primary-button" type="submit">Tim kiem</button>
+                <a class="secondary-button" th:href="@{/courses}">Xoa loc</a>
+            </form>
+            <p class="search-note" th:if="${keyword != null and !keyword.isBlank()}">
+                Ket qua tim kiem cho tu khoa: <strong th:text="${keyword}">keyword</strong>
+            </p>
+        </section>
+
+        <section sec:authorize="hasRole('ADMIN')" class="role-banner admin-banner">
+            <div>
+                <p class="role-label">ADMIN MODE</p>
+                <h2>Khu vuc quan tri hoc phan</h2>
+                <p>Ban co the them, sua va xoa hoc phan truc tiep tu danh sach ben duoi.</p>
+            </div>
+            <a class="primary-button" th:href="@{/courses/create}">Tao hoc phan moi</a>
+        </section>
+
+        <section sec:authorize="hasRole('STUDENT')" class="role-banner student-banner">
+            <div>
+                <p class="role-label">STUDENT MODE</p>
+                <h2>Khu vuc dang ky hoc phan</h2>
+                <p>Ban co the xem danh sach hoc phan, nhan nut Enroll va vao My Courses de xem cac mon da dang ky.</p>
+            </div>
+            <a class="secondary-button" th:href="@{/my-courses}">Xem My Courses</a>
+        </section>
+
+        <div th:if="${successMessage}" class="flash-success" th:text="${successMessage}"></div>
+
+        <section th:if="${#lists.isEmpty(courses)}" class="empty-state">
+            <h2>Khong tim thay hoc phan phu hop</h2>
+            <p>Thu doi tu khoa tim kiem hoac quay lai danh sach tat ca hoc phan.</p>
+            <a class="secondary-button" th:href="@{/courses}">Xem tat ca hoc phan</a>
+        </section>
+
+        <section th:unless="${#lists.isEmpty(courses)}" class="course-grid">
+            <article class="course-card" th:each="course : ${courses}">
+                <div class="image-frame">
+                    <img th:src="${course.image}" alt="Course image" onerror="this.src='https://placehold.co/900x560/d7efe6/0f766e?text=No+Image'">
+                </div>
+                <div class="course-content">
+                    <span class="category-badge" th:text="${course.category != null ? course.category.name : 'Chua phan loai'}">Danh muc</span>
+                    <h2 th:text="${course.name}">Ten hoc phan</h2>
+                    <p><strong>So tin chi:</strong> <span th:text="${course.credits}">0</span></p>
+                    <p><strong>Giang vien:</strong> <span th:text="${course.lecturer}">Ten giang vien</span></p>
+
+                    <div class="action-row student-actions" sec:authorize="hasRole('STUDENT')">
+                        <form th:action="@{/enroll/{courseId}(courseId=${course.id})}" method="post">
+                            <button class="enroll-button" type="submit">Enroll hoc phan</button>
+                        </form>
+                    </div>
+
+                    <div class="action-row admin-actions" sec:authorize="hasRole('ADMIN')">
+                        <a class="secondary-button" th:href="@{/courses/edit/{id}(id=${course.id})}">Sua hoc phan</a>
+                        <form th:action="@{/courses/delete/{id}(id=${course.id})}" method="post">
+                            <button class="danger-button" type="submit" onclick="return confirm('Ban co chac muon xoa hoc phan nay?')">Xoa hoc phan</button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <nav th:if="${totalPages > 1}" class="pagination">
+            <a th:if="${!coursePage.first}" th:href="@{/courses(page=${currentPage - 1},keyword=${keyword})}">Trang truoc</a>
+
+            <a th:each="pageNumber : ${pageNumbers}"
+               th:href="@{/courses(page=${pageNumber},keyword=${keyword})}"
+               th:text="${pageNumber}"
+               th:classappend="${pageNumber == currentPage} ? 'active' : ''">
+                1
+            </a>
+
+            <a th:if="${!coursePage.last}" th:href="@{/courses(page=${currentPage + 1},keyword=${keyword})}">Trang sau</a>
+        </nav>
+    </main>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dang nhap</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <main class="page-shell form-shell">
+        <section class="form-panel auth-panel">
+            <div class="form-header">
+                <p class="eyebrow">Student Login</p>
+                <h1>Dang nhap</h1>
+                <p class="subtitle">Su dung tai khoan sinh vien da dang ky de truy cap cac chuc nang yeu cau xac thuc.</p>
+            </div>
+
+            <div th:if="${param.registered}" class="flash-success">
+                Dang ky thanh cong. Ban co the dang nhap ngay bay gio.
+            </div>
+
+            <div th:if="${param.logout}" class="flash-success">
+                Ban da dang xuat thanh cong.
+            </div>
+
+            <div th:if="${param.error}" class="error-banner">
+                Username hoac password khong dung.
+            </div>
+
+            <form th:action="@{/login}" method="post" class="course-form">
+                <div class="field-group">
+                    <label for="username">Username</label>
+                    <input id="username" name="username" type="text" placeholder="Nhap username">
+                </div>
+
+                <div class="field-group">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" placeholder="Nhap password">
+                </div>
+
+                <div class="form-actions">
+                    <button class="primary-button" type="submit">Dang nhap</button>
+                    <a class="secondary-button" th:href="@{/register}">Dang ky</a>
+                    <a class="secondary-button" th:href="@{/home}">Ve Home</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${formTitle}">Course Form</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <main class="page-shell form-shell">
+        <section class="form-panel">
+            <div class="form-header">
+                <p class="eyebrow">CRUD Hoc Phan</p>
+                <h1 th:text="${formTitle}">Them hoc phan</h1>
+                <p class="subtitle">Nhap day du thong tin hoc phan va chon danh muc phu hop.</p>
+            </div>
+
+            <form th:action="${formAction}" th:object="${course}" method="post" class="course-form">
+                <div class="field-group">
+                    <label for="name">Ten hoc phan</label>
+                    <input id="name" type="text" th:field="*{name}" placeholder="Nhap ten hoc phan">
+                    <small class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+                </div>
+
+                <div class="field-group">
+                    <label for="credits">So tin chi</label>
+                    <input id="credits" type="number" min="1" th:field="*{credits}" placeholder="Nhap so tin chi">
+                    <small class="error-message" th:if="${#fields.hasErrors('credits')}" th:errors="*{credits}"></small>
+                </div>
+
+                <div class="field-group">
+                    <label for="lecturer">Giang vien</label>
+                    <input id="lecturer" type="text" th:field="*{lecturer}" placeholder="Nhap ten giang vien">
+                    <small class="error-message" th:if="${#fields.hasErrors('lecturer')}" th:errors="*{lecturer}"></small>
+                </div>
+
+                <div class="field-group">
+                    <label for="image">Hinh anh (URL)</label>
+                    <input id="image" type="text" th:field="*{image}" placeholder="Nhap URL hinh anh">
+                    <small class="error-message" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></small>
+                </div>
+
+                <div class="field-group">
+                    <label for="category">Danh muc</label>
+                    <select id="category" name="category">
+                        <option value="">-- Chon danh muc --</option>
+                        <option th:each="cat : ${categories}"
+                                th:value="${cat.id}"
+                                th:text="${cat.name}"
+                                th:selected="${course.category != null and course.category.id == cat.id}">
+                        </option>
+                    </select>
+                    <small class="error-message" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></small>
+                </div>
+
+                <div class="form-actions">
+                    <button class="primary-button" type="submit">Luu</button>
+                    <a class="secondary-button" th:href="@{/home}">Quay lai</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

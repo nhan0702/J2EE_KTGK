@@ -1,0 +1,458 @@
+:root {
+    --bg: #f5efe6;
+    --card: #fffaf3;
+    --accent: #0f766e;
+    --accent-soft: #d9f3ef;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --danger: #b42318;
+    --danger-soft: #ffe2df;
+    --shadow: 0 18px 40px rgba(15, 118, 110, 0.14);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), transparent 28%),
+        linear-gradient(180deg, #fcf8f2 0%, var(--bg) 100%);
+    color: var(--text);
+}
+
+.page-shell {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 48px 0 64px;
+}
+
+.hero {
+    margin-bottom: 28px;
+}
+
+.hero-row {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.user-panel {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.user-panel form {
+    margin: 0;
+}
+
+.user-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.search-panel {
+    margin-bottom: 24px;
+    padding: 20px 22px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(15, 118, 110, 0.1);
+    box-shadow: var(--shadow);
+}
+
+.search-form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-form input {
+    flex: 1 1 280px;
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid #d9dfdf;
+    background: white;
+    font-size: 1rem;
+}
+
+.search-form input:focus {
+    outline: 2px solid rgba(15, 118, 110, 0.16);
+    border-color: var(--accent);
+}
+
+.search-note {
+    margin: 12px 0 0;
+    color: var(--muted);
+}
+
+.role-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    padding: 22px 24px;
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+}
+
+.admin-banner {
+    background: linear-gradient(135deg, #fff4d6, #ffe7b8);
+    border: 1px solid #f2c46d;
+}
+
+.student-banner {
+    background: linear-gradient(135deg, #eafaf3, #dff7ea);
+    border: 1px solid #8fddb0;
+}
+
+.role-label {
+    margin: 0 0 6px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.role-banner h2 {
+    margin: 0 0 6px;
+    font-size: 1.35rem;
+}
+
+.role-banner p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.student-tip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: white;
+    color: #027a48;
+    font-weight: 600;
+}
+
+.eyebrow {
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.8rem;
+}
+
+.hero h1,
+.form-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 3vw, 3.2rem);
+}
+
+.subtitle {
+    max-width: 760px;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button,
+.enroll-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: none;
+    text-decoration: none;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.primary-button {
+    background: var(--accent);
+    color: white;
+}
+
+.secondary-button {
+    background: white;
+    color: var(--accent);
+    border: 1px solid rgba(15, 118, 110, 0.18);
+}
+
+.enroll-button {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white;
+    border: 1px solid #15803d;
+    font-weight: 700;
+}
+
+.danger-button {
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.danger-button:hover,
+.enroll-button:hover {
+    transform: translateY(-2px);
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.course-card,
+.empty-state,
+.form-panel {
+    overflow: hidden;
+    border-radius: 22px;
+    background: var(--card);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(15, 118, 110, 0.08);
+}
+
+.image-frame {
+    aspect-ratio: 16 / 7;
+    max-height: 190px;
+    background: linear-gradient(135deg, #d7efe6, #c7e7ff);
+}
+
+.image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.course-content {
+    padding: 16px 16px 18px;
+}
+
+.course-content h2 {
+    margin: 0 0 10px;
+    font-size: 1.08rem;
+    line-height: 1.35;
+}
+
+.course-content p {
+    margin: 6px 0;
+    line-height: 1.45;
+    font-size: 0.95rem;
+}
+
+.action-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+.student-actions {
+    padding-top: 6px;
+}
+
+.admin-actions {
+    border-top: 1px dashed rgba(15, 118, 110, 0.16);
+    padding-top: 12px;
+}
+
+.action-row form {
+    margin: 0;
+}
+
+.empty-state {
+    padding: 40px;
+    text-align: center;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+}
+
+.pagination a {
+    min-width: 42px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    text-align: center;
+    color: var(--accent);
+    background: white;
+    border: 1px solid rgba(15, 118, 110, 0.18);
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.pagination a:hover,
+.pagination a.active {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.form-shell {
+    width: min(760px, calc(100% - 32px));
+}
+
+.form-panel {
+    padding: 32px;
+}
+
+.auth-panel {
+    position: relative;
+}
+
+.form-header {
+    margin-bottom: 24px;
+}
+
+.course-form {
+    display: grid;
+    gap: 18px;
+}
+
+.field-group {
+    display: grid;
+    gap: 8px;
+}
+
+.field-group label {
+    font-weight: 600;
+}
+
+.field-group input,
+.field-group select {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid #d9dfdf;
+    background: white;
+    font-size: 1rem;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+    outline: 2px solid rgba(15, 118, 110, 0.16);
+    border-color: var(--accent);
+}
+
+.error-message {
+    color: var(--danger);
+    font-size: 0.9rem;
+}
+
+.error-banner {
+    background: #fff1f1;
+    color: var(--danger);
+    border: 1px solid #f3b3b3;
+    border-radius: 14px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.flash-success {
+    background: linear-gradient(135deg, #d9f3ef, #ccfaed);
+    color: #065f46;
+    border: 1px solid rgba(15, 118, 110, 0.3);
+    border-radius: 14px;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(15, 118, 110, 0.12);
+    animation: slideDown 0.4s ease;
+}
+
+.flash-success a {
+    color: inherit;
+    font-weight: 700;
+    margin-left: 6px;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.category-badge {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 640px) {
+    .page-shell,
+    .form-shell {
+        width: min(100% - 20px, 1120px);
+        padding-top: 28px;
+    }
+
+    .course-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-panel {
+        padding: 22px;
+    }
+
+    .hero-actions,
+    .user-panel,
+    .role-banner,
+    .search-form {
+        width: 100%;
+    }
+
+    .image-frame {
+        max-height: 180px;
+    }
+}

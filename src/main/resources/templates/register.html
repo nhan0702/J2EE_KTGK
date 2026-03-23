@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dang ky tai khoan sinh vien</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <main class="page-shell form-shell">
+        <section class="form-panel auth-panel">
+            <div class="form-header">
+                <p class="eyebrow">Student Register</p>
+                <h1>Dang ky tai khoan sinh vien</h1>
+                <p class="subtitle">Tao tai khoan moi voi quyen mac dinh la STUDENT.</p>
+            </div>
+
+            <div th:if="${success}" class="flash-success">
+                Dang ky thanh cong. Tai khoan da duoc luu vao bang student voi quyen STUDENT.
+                <a th:href="@{/login}">Dang nhap ngay</a>
+            </div>
+
+            <form th:action="@{/register}" th:object="${student}" method="post" class="course-form">
+                <div class="field-group">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" th:field="*{username}" placeholder="Nhap username">
+                    <small class="error-message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+                </div>
+
+                <div class="field-group">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" th:field="*{password}" placeholder="Nhap password">
+                    <small class="error-message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+                </div>
+
+                <div class="field-group">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" th:field="*{email}" placeholder="Nhap email">
+                    <small class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                </div>
+
+                <div class="form-actions">
+                    <button class="primary-button" type="submit">Dang ky</button>
+                    <a class="secondary-button" th:href="@{/home}">Ve Home</a>
+                    <a class="secondary-button" th:href="@{/login}">Dang nhap</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

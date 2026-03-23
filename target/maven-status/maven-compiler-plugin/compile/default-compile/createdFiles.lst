@@ -1,0 +1,16 @@
+com\example\J2EE_KTGK\service\impl\StudentServiceImpl.class
+com\example\J2EE_KTGK\controller\AuthController.class
+com\example\J2EE_KTGK\entity\Role.class
+com\example\J2EE_KTGK\service\StudentService.class
+com\example\J2EE_KTGK\entity\Course.class
+com\example\J2EE_KTGK\repository\CategoryRepository.class
+com\example\J2EE_KTGK\service\EnrollmentService.class
+com\example\J2EE_KTGK\J2EeKtgkApplication.class
+com\example\J2EE_KTGK\entity\Student.class
+com\example\J2EE_KTGK\controller\EnrollmentController.class
+com\example\J2EE_KTGK\repository\EnrollmentRepository.class
+com\example\J2EE_KTGK\repository\StudentRepository.class
+com\example\J2EE_KTGK\entity\Category.class
+com\example\J2EE_KTGK\repository\RoleRepository.class
+com\example\J2EE_KTGK\service\impl\EnrollmentServiceImpl.class
+com\example\J2EE_KTGK\entity\Enrollment.class

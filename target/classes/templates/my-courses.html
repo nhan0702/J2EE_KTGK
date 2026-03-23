@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Courses</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero hero-row">
+            <div>
+                <p class="eyebrow">My Courses</p>
+                <h1>Cac hoc phan da dang ky</h1>
+                <p class="subtitle">Danh sach nhung hoc phan ma sinh vien hien tai da dang ky thanh cong.</p>
+            </div>
+            <div class="hero-actions">
+                <span class="user-chip">Sinh vien: <strong sec:authentication="name">username</strong></span>
+                <a class="secondary-button" th:href="@{/courses}">Xem tat ca hoc phan</a>
+                <form th:action="@{/logout}" method="post">
+                    <button class="secondary-button" type="submit">Dang xuat</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="role-banner student-banner">
+            <div>
+                <p class="role-label">STUDENT MODE</p>
+                <h2>Danh sach hoc phan cua ban</h2>
+                <p>Trang nay chi hien thi nhung hoc phan da duoc dang ky boi tai khoan sinh vien hien tai.</p>
+            </div>
+            <span class="student-tip" th:text="'Tong so hoc phan: ' + ${#lists.size(courses)}">Tong so hoc phan: 0</span>
+        </section>
+
+        <section th:if="${#lists.isEmpty(courses)}" class="empty-state">
+            <h2>Ban chua dang ky hoc phan nao</h2>
+            <p>Hay quay lai trang danh sach hoc phan va nhan nut Enroll de dang ky.</p>
+            <a class="primary-button" th:href="@{/courses}">Den trang hoc phan</a>
+        </section>
+
+        <section th:unless="${#lists.isEmpty(courses)}" class="course-grid">
+            <article class="course-card" th:each="course : ${courses}">
+                <div class="image-frame">
+                    <img th:src="${course.image}" alt="Course image" onerror="this.src='https://placehold.co/900x560/d7efe6/0f766e?text=No+Image'">
+                </div>
+                <div class="course-content">
+                    <span class="category-badge" th:text="${course.category != null ? course.category.name : 'Chua phan loai'}">Danh muc</span>
+                    <h2 th:text="${course.name}">Ten hoc phan</h2>
+                    <p><strong>So tin chi:</strong> <span th:text="${course.credits}">0</span></p>
+                    <p><strong>Giang vien:</strong> <span th:text="${course.lecturer}">Ten giang vien</span></p>
+                </div>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
