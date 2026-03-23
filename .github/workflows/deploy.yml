@@ -68,7 +68,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME != '' && format('{0}/j2ee-ktgk', secrets.DOCKERHUB_USERNAME) || 'j2ee-ktgk' }}
+          images: ${{ format('{0}/j2ee-ktgk', secrets.DOCKERHUB_USERNAME) }}
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -87,21 +87,24 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Triển khai lên DevOps Classroom
+      - name: Deploy to server
+        if: github.event_name == 'push'
+        env:
+          IMAGE_REPO: ${{ format('{0}/j2ee-ktgk', secrets.DOCKERHUB_USERNAME) }}
+          IMAGE_TAG: latest
         run: |
-          REPO="repository/docker"
-          RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST "${{ secrets.DEPLOY_URL }}?repo=$REPO&tag=latest")
-          BODY=$(echo "$RESPONSE" | sed "$d")
+          RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST "${{ secrets.DEPLOY_URL }}?repo=$IMAGE_REPO&tag=$IMAGE_TAG")
+          BODY=$(echo "$RESPONSE" | sed '$d')
           CODE=$(echo "$RESPONSE" | tail -n1)
           echo "Webhook HTTP: $CODE"
           if [ "$CODE" -lt 200 ] || [ "$CODE" -ge 300 ]; then
-            echo "Deploy thất bại. Xem chi tiết trong nhóm log bên dưới."
-            echo "::group::Chi tiết webhook JSON"
+            echo "Deploy that bai. Xem chi tiet trong nhom log ben duoi."
+            echo "::group::Chi tiet webhook JSON"
             echo "$BODY" | python3 -m json.tool 2>/dev/null || echo "$BODY"
             echo "::endgroup::"
             exit 1
           fi
-          echo "Deploy thành công."
-          echo "::group::Chi tiết webhook JSON"
+          echo "Deploy thanh cong."
+          echo "::group::Chi tiet webhook JSON"
           echo "$BODY" | python3 -m json.tool 2>/dev/null || echo "$BODY"
           echo "::endgroup::"
