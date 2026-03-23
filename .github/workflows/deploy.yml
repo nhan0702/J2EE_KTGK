@@ -93,7 +93,22 @@ jobs:
           IMAGE_REPO: ${{ format('{0}/j2ee-ktgk', secrets.DOCKERHUB_USERNAME) }}
           IMAGE_TAG: latest
         run: |
-          RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST "${{ secrets.DEPLOY_URL }}?repo=$IMAGE_REPO&tag=$IMAGE_TAG")
+          URL="${{ secrets.DEPLOY_URL }}?repo=$IMAGE_REPO&tag=$IMAGE_TAG"
+          echo "Deploy URL: $URL"
+
+          set +e
+          RESPONSE=$(curl --http1.1 --retry 3 --retry-all-errors --retry-delay 5 \
+            --connect-timeout 10 --max-time 90 \
+            -sS -w "\n%{http_code}" -X POST "$URL")
+          CURL_EXIT=$?
+          set -e
+
+          if [ "$CURL_EXIT" -ne 0 ]; then
+            echo "Khong goi duoc webhook deploy. curl exit code: $CURL_EXIT"
+            echo "Loi nay thuong la server dong ket noi som, webhook bi qua tai, hoac DEPLOY_URL co van de."
+            exit "$CURL_EXIT"
+          fi
+
           BODY=$(echo "$RESPONSE" | sed '$d')
           CODE=$(echo "$RESPONSE" | tail -n1)
           echo "Webhook HTTP: $CODE"
