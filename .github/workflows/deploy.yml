@@ -90,15 +90,21 @@ jobs:
       - name: Deploy to server
         if: github.event_name == 'push'
         env:
+          DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
           IMAGE_REPO: ${{ format('{0}/j2ee-ktgk', secrets.DOCKERHUB_USERNAME) }}
           IMAGE_TAG: latest
         run: |
-          URL="${{ secrets.DEPLOY_URL }}?repo=$IMAGE_REPO&tag=$IMAGE_TAG"
-          echo "Deploy URL: $URL"
+          ENCODED_REPO=$(python3 -c "import urllib.parse, os; print(urllib.parse.quote(os.environ['IMAGE_REPO'], safe=''))")
+          ENCODED_TAG=$(python3 -c "import urllib.parse, os; print(urllib.parse.quote(os.environ['IMAGE_TAG'], safe=''))")
+          URL="${DEPLOY_URL}?repo=${ENCODED_REPO}&tag=${ENCODED_TAG}"
+          echo "Deploy request prepared for image: ${IMAGE_REPO}:${IMAGE_TAG}"
 
           set +e
           RESPONSE=$(curl --http1.1 --retry 3 --retry-all-errors --retry-delay 5 \
             --connect-timeout 10 --max-time 90 \
+            -H "Accept: application/json" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            --data "" \
             -sS -w "\n%{http_code}" -X POST "$URL")
           CURL_EXIT=$?
           set -e
