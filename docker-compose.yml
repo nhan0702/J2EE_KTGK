@@ -1,41 +1,46 @@
-version: '3.8'
-
 services:
   db:
     image: mysql:8.0
-    container_name: cv_mysql
+    container_name: j2ee_ktgk_mysql
     restart: always
     environment:
-      MYSQL_DATABASE: huynhquocnam
-      MYSQL_USER: ecommerce_user
-      MYSQL_PASSWORD: Nam@123456
-      MYSQL_ROOT_PASSWORD: Nam@123456
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-j2ee_ktgk}
+      MYSQL_USER: ${MYSQL_USER:-app_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-123456}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-123456}
     ports:
-      - "3307:3306"
+      - "${MYSQL_PORT:-3307}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
-      - cv_network
+      - app_network
 
-  backend:
-    build: ./backend
-    container_name: cv_backend
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: j2ee_ktgk_app
     restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/huynhquocnam?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=ecommerce_user
-      - SPRING_DATASOURCE_PASSWORD=Nam@123456
-      - CORS_ALLOWED_ORIGIN=http://localhost:3000
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE:-j2ee_ktgk}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-app_user}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-123456}
     ports:
-      - "8080:8080"
+      - "${APP_PORT:-8080}:8080"
     networks:
-      - cv_network
+      - app_network
 
 volumes:
   mysql_data:
  
 networks:
-  cv_network:
+  app_network:
     driver: bridge
